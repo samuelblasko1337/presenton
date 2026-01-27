@@ -1,7 +1,52 @@
 from html.parser import HTMLParser
 from typing import List, Optional
+import re
 
 from models.pptx_models import PptxFontModel, PptxTextRunModel
+
+
+# --- NEW: helpers to keep PPTX export robust and support Markdown emphasis ---
+
+_TAG_RE = re.compile(r"</?[a-zA-Z][^>]*>")  # detect real HTML tags
+_MD_BOLD_RE = re.compile(r"(\*\*|__)(.+?)\1")
+# italic: avoid matching bullet markers like "* " at line start
+_MD_ITALIC_RE = re.compile(r"(?<!\*)\*(?!\s)(.+?)(?<!\s)\*(?!\*)|(?<!_)_(?!\s)(.+?)(?<!\s)_(?!_)")
+
+def _escape_angles_outside_tags(text: str) -> str:
+    """
+    Escape < and > so that strings like '<1%' or 'MTTR <4h' won't be treated as tags.
+    We only do this when the string does NOT already contain real HTML tags.
+    """
+    if _TAG_RE.search(text):
+        return text
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+def _markdown_emphasis_to_html(text: str) -> str:
+    """
+    Convert Markdown emphasis to HTML tags.
+    IMPORTANT: Also works when the string already contains HTML tags by only converting
+    text segments outside of tags.
+    """
+    def _convert_segment(seg: str) -> str:
+        # Convert bold first
+        seg = _MD_BOLD_RE.sub(r"<strong>\2</strong>", seg)
+
+        # Convert italic; group(1) matches *...*, group(2) matches _..._
+        def _italics_sub(m: re.Match) -> str:
+            inner = m.group(1) if m.group(1) is not None else m.group(2)
+            return f"<em>{inner}</em>"
+
+        seg = _MD_ITALIC_RE.sub(_italics_sub, seg)
+        return seg
+
+    # Split into tags and non-tags, convert only non-tag parts
+    parts = re.split(r"(<[^>]+>)", text)
+    for i, p in enumerate(parts):
+        if p.startswith("<") and p.endswith(">"):
+            continue
+        parts[i] = _convert_segment(p)
+    return "".join(parts)
+
 
 
 class InlineHTMLToRunsParser(HTMLParser):
@@ -55,7 +100,14 @@ class InlineHTMLToRunsParser(HTMLParser):
 def parse_html_text_to_text_runs(
     text: str, base_font: Optional[PptxFontModel] = None
 ) -> List[PptxTextRunModel]:
+    # Normalize line breaks
     normalized_text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+    # NEW: if no HTML tags exist, safely escape < and > and convert markdown emphasis
+    normalized_text = _escape_angles_outside_tags(normalized_text)
+    normalized_text = _markdown_emphasis_to_html(normalized_text)
+
+    # Keep newline behavior consistent
     normalized_text = normalized_text.replace("\n", "<br>")
 
     parser = InlineHTMLToRunsParser(base_font if base_font else PptxFontModel())

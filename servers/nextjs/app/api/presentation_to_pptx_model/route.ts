@@ -471,7 +471,7 @@ async function getAllChildElementsAttributes({
           return a.depth - b.depth;
         }
 
-        return zIndexB - zIndexA;
+        return zIndexA - zIndexB;
       })
       .map(({ attributes }) => {
         if (

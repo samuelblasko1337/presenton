@@ -4,8 +4,34 @@
 
 
 body {
-  font-family: var(--font-inter), var(--font-roboto), sans-serif;
+  font-family: var(--font-equip), var(--font-roboto), sans-serif;
 }
+
+/* Headings: Equip Extended */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-equip-ext), var(--font-equip), sans-serif;
+}
+
+h1, h2 {
+  font-weight: 800; /* EquipExtXBol */
+}
+
+h3 {
+  font-weight: 300; /* EquipExtLig (Subtitle) */
+}
+
+h4, h5, h6 {
+  font-weight: 500; /* EquipExtMed */
+}
+
+/* Markdown/Preview */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  font-family: var(--font-equip-ext), var(--font-equip), sans-serif !important;
+}
+
+.prose h1, .prose h2 { font-weight: 800 !important; }
+.prose h3 { font-weight: 300 !important; }
+.prose h4, .prose h5, .prose h6 { font-weight: 500 !important; }
 
 @layer utilities {
   .text-balance {
@@ -77,8 +103,8 @@ body {
   }
 }
 
-strong {
-  @apply font-black;
+strong { 
+  @apply font-extrabold; 
 }
 
 

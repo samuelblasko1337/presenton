@@ -52,6 +52,35 @@ function convertLineHeightToRelative(lineHeight?: number, fontSize?: number): nu
   return calculatedLineHeight - 0.3
 }
 
+function mapToPptxFontName(rawName?: string, rawFamily?: string, weight?: number, tagName?: string): string {
+  const input = `${rawFamily ?? ""} ${rawName ?? ""}`.toLowerCase();
+  const w = weight ?? 400;
+  const tag = (tagName ?? "").toLowerCase();
+
+  // Headline-Rollen
+  if (tag === "h1" || tag === "h2") return "Equip Extended ExtraBold";
+  if (tag === "h3") return "Equip Extended Light";
+
+  // Next/font Klassenname
+  if ((rawName ?? "").startsWith("__equip")) return "Equip";
+  if ((rawName ?? "").startsWith("__inter")) return "Inter 24pt";
+
+  // Equip Extended
+  if (input.includes("equip extended") || input.includes("equipext") || input.includes("--font-equip-ext")) {
+    if (w >= 700) return "Equip Extended ExtraBold";
+    if (w >= 500) return "Equip Extended Medium";
+    return "Equip Extended Light";
+  }
+
+  // Equip
+  if (input.includes("equip") || input.includes("--font-equip")) {
+    return w >= 500 ? "Equip Medium" : "Equip Light";
+  }
+
+  // Fallback
+  return rawName || "Equip";
+}
+
 export function convertElementAttributesToPptxSlides(
   slidesAttributes: SlideAttributesResult[]
 ): PptxSlideModel[] {
@@ -117,7 +146,7 @@ function convertToTextBox(element: ElementAttributes): PptxTextBoxModel {
   } : undefined;
 
   const font: PptxFontModel | undefined = element.font ? {
-    name: element.font.name ?? "Inter",
+    name: mapToPptxFontName(element.font.name, (element.font as any).family, element.font.weight, element.tagName),
     size: Math.round(element.font.size ?? 16),
     font_weight: element.font.weight ?? 400,
     italic: element.font.italic ?? false,
@@ -172,7 +201,7 @@ function convertToAutoShapeBox(element: ElementAttributes): PptxAutoShapeBoxMode
     spacing: undefined,
     alignment: convertTextAlignToPptxAlignment(element.textAlign),
     font: element.font ? {
-      name: element.font.name ?? "Inter",
+      name: mapToPptxFontName(element.font.name, (element.font as any).family, element.font.weight, element.tagName),
       size: Math.round(element.font.size ?? 16),
       font_weight: element.font.weight ?? 400,
       italic: element.font.italic ?? false,

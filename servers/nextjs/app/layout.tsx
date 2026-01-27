@@ -17,6 +17,25 @@ const inter = localFont({
   variable: "--font-inter",
 });
 
+const equip = localFont({
+  src: [
+    { path: "./fonts/EquipLig.ttf", weight: "300", style: "normal" },
+    { path: "./fonts/EquipMed.ttf", weight: "500", style: "normal" },
+  ],
+  variable: "--font-equip",
+  display: "swap",
+});
+
+const equipExt = localFont({
+  src: [
+    { path: "./fonts/EquipExtLig.ttf", weight: "300", style: "normal" },
+    { path: "./fonts/EquipExtMed.ttf", weight: "500", style: "normal" },
+    { path: "./fonts/EquipExtXBol.ttf", weight: "800", style: "normal" },
+  ],
+  variable: "--font-equip-ext",
+  display: "swap",
+});
+
 const instrument_sans = Instrument_Sans({
   subsets: ["latin"],
   weight: ["400"],
@@ -83,7 +102,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${roboto.variable} ${instrument_sans.variable} antialiased`}
+        className={`${equip.variable} ${equipExt.variable} ${roboto.variable} ${instrument_sans.variable} antialiased`}
       >
         <Providers>
           <MixpanelInitializer>

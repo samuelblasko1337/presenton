@@ -52,7 +52,7 @@ class PptxPositionModel(BaseModel):
 
 
 class PptxFontModel(BaseModel):
-    name: str = "Inter"
+    name: str = "Equip"
     size: int = 16
     italic: bool = False
     color: str = "000000"

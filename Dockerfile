@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     fontconfig \
     chromium
 
-
+    
 # Install Node.js 20 using NodeSource repository
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
@@ -22,6 +22,8 @@ ENV APP_DATA_DIRECTORY=/app_data
 ENV TEMP_DIRECTORY=/tmp/presenton
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
+
+RUN apt-get update && apt-get install -y zstd && rm -rf /var/lib/apt/lists/*
 
 # Install ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
@@ -40,6 +42,12 @@ RUN npm install
 
 # Copy Next.js app
 COPY servers/nextjs/ /app/servers/nextjs/
+
+# --- Install custom fonts system-wide (needed for correct PPTX text measurement) ---
+RUN mkdir -p /usr/local/share/fonts/equip
+COPY servers/nextjs/app/fonts/ /usr/local/share/fonts/equip/
+RUN fc-cache -f -v
+
 
 # Build the Next.js app
 WORKDIR /app/servers/nextjs
