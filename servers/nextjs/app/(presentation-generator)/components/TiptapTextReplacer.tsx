@@ -38,10 +38,34 @@ const TiptapTextReplacer: React.FC<TiptapTextReplacerProps> = ({
   const rootsRef = useRef<
     Map<HTMLElement, { root: any; dataPath: string;  fallbackText: string }>
   >(new Map());
+
+  const markTiptapReady = () => {
+    if (typeof window === "undefined") return;
+    if (!containerRef.current) return;
+
+    containerRef.current.setAttribute("data-tiptap-ready", "true");
+
+    const all = Array.from(
+      document.querySelectorAll(".tiptap-text-replacer")
+    ) as HTMLElement[];
+    const allReady =
+      all.length > 0 &&
+      all.every((el) => el.getAttribute("data-tiptap-ready") === "true");
+
+    (window as any).__PRESENTON_TIPTAP_READY__ = allReady;
+    if (allReady) {
+      window.dispatchEvent(new Event("presenton:tiptap-ready"));
+    }
+  };
+
   useEffect(() => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
+    container.setAttribute("data-tiptap-ready", "false");
+    if (typeof window !== "undefined") {
+      (window as any).__PRESENTON_TIPTAP_READY__ = false;
+    }
 
     const replaceTextElements = () => {
       // Get all elements in the container
@@ -121,12 +145,19 @@ const TiptapTextReplacer: React.FC<TiptapTextReplacerProps> = ({
       });
     };
 
-  
-    // Replace text elements after a short delay to ensure DOM is ready
-    const timer = setTimeout(replaceTextElements, 1000);
+    let cancelled = false;
+    const run = () => {
+      if (cancelled) return;
+      replaceTextElements();
+      requestAnimationFrame(() => {
+        if (cancelled) return;
+        markTiptapReady();
+      });
+    };
+    requestAnimationFrame(run);
 
     return () => {
-      clearTimeout(timer);
+      cancelled = true;
     };
   }, [slideData, slideIndex]);
   

@@ -26,6 +26,7 @@ interface GetAllChildElementsAttributesArgs {
   inheritedBorderRadius?: number[];
   inheritedZIndex?: number;
   inheritedOpacity?: number;
+  domPath?: string;
   screenshotsDir: string;
 }
 
@@ -36,6 +37,7 @@ export async function GET(request: NextRequest) {
   try {
     const id = await getPresentationId(request);
     [browser, page] = await getBrowserAndPage(id);
+    await waitForExportReady(page);
     const screenshotsDir = getScreenshotsDir();
 
     const { slides, speakerNotes } = await getSlidesAndSpeakerNotes(page);
@@ -45,6 +47,7 @@ export async function GET(request: NextRequest) {
       screenshotsDir,
       speakerNotes
     );
+    await maybeWriteExportDebug(id, slides_attributes);
     const slides_pptx_models =
       convertElementAttributesToPptxSlides(slides_attributes);
     const presentation_pptx_model: PptxPresentationModel = {
@@ -105,6 +108,50 @@ async function getBrowserAndPage(id: string): Promise<[Browser, Page]> {
   return [browser, page];
 }
 
+async function waitForExportReady(page: Page) {
+  await page.addStyleTag({
+    content: `*,*::before,*::after{animation:none !important;transition:none !important;}`,
+  });
+  await page.waitForFunction(
+    () => (window as any).__PRESENTON_EXPORT_READY__ === true,
+    { timeout: 60000 }
+  );
+}
+
+async function maybeWriteExportDebug(
+  presentationId: string,
+  slidesAttributes: SlideAttributesResult[]
+) {
+  if (process.env.EXPORT_DEBUG !== "1") return;
+
+  const debugDir = path.join(process.cwd(), "tmp", "export_debug");
+  fs.mkdirSync(debugDir, { recursive: true });
+
+  const runId = `${presentationId}-${Date.now()}`;
+  const filePath = path.join(debugDir, `export-${runId}.json`);
+
+  const debugPayload = {
+    presentationId,
+    slides: slidesAttributes.map((slide, slideIndex) => ({
+      slideIndex,
+      backgroundColor: slide.backgroundColor,
+      elements: slide.elements.map((el, elementIndex) => ({
+        index: elementIndex,
+        domPath: el.domPath,
+        depth: el.depth,
+        zIndex: el.zIndex,
+        bbox: el.position,
+        text: el.innerText,
+        elementId: el.id,
+        className: el.className,
+        tagName: el.tagName,
+      })),
+    })),
+  };
+
+  fs.writeFileSync(filePath, JSON.stringify(debugPayload, null, 2));
+}
+
 async function closeBrowserAndPage(browser: Browser | null, page: Page | null) {
   await page?.close();
   await browser?.close();
@@ -131,9 +178,16 @@ async function postProcessSlidesAttributes(
   speakerNotes: string[]
 ) {
   for (const [index, slideAttributes] of slidesAttributes.entries()) {
-    for (const element of slideAttributes.elements) {
+    for (const [elementIndex, element] of slideAttributes.elements.entries()) {
       if (element.should_screenshot) {
-        const screenshotPath = await screenshotElement(element, screenshotsDir);
+        const stableId = element.domPath
+          ? `slide${index}-${element.domPath}`
+          : `slide${index}-el${elementIndex}`;
+        const screenshotPath = await screenshotElement(
+          element,
+          screenshotsDir,
+          stableId
+        );
         element.imageSrc = screenshotPath;
         element.should_screenshot = false;
         element.objectFit = "cover";
@@ -146,11 +200,15 @@ async function postProcessSlidesAttributes(
 
 async function screenshotElement(
   element: ElementAttributes,
-  screenshotsDir: string
+  screenshotsDir: string,
+  stableId?: string
 ) {
+  const safeId = stableId
+    ? stableId.replace(/[^a-zA-Z0-9._-]/g, "_")
+    : uuidv4();
   const screenshotPath = path.join(
     screenshotsDir,
-    `${uuidv4()}.png`
+    `${safeId}.png`
   ) as `${string}.png`;
 
   // For SVG elements, use convertSvgToPng
@@ -278,6 +336,7 @@ async function getAllChildElementsAttributes({
   inheritedBorderRadius,
   inheritedZIndex,
   inheritedOpacity,
+  domPath = "",
   screenshotsDir,
 }: GetAllChildElementsAttributesArgs): Promise<SlideAttributesResult> {
   if (!rootRect) {
@@ -298,8 +357,11 @@ async function getAllChildElementsAttributes({
 
   const allResults: { attributes: ElementAttributes; depth: number }[] = [];
 
-  for (const childElementHandle of directChildElementHandles) {
+  for (const [childIndex, childElementHandle] of directChildElementHandles.entries()) {
+    const childDomPath = domPath ? `${domPath}.${childIndex}` : `${childIndex}`;
     const attributes = await getElementAttributes(childElementHandle);
+    attributes.domPath = childDomPath;
+    attributes.depth = depth;
 
     if (
       ["style", "script", "link", "meta", "path"].includes(attributes.tagName)
@@ -397,6 +459,7 @@ async function getAllChildElementsAttributes({
       element: childElementHandle,
       rootRect: rootRect,
       depth: depth + 1,
+      domPath: childDomPath,
       inheritedFont: attributes.font || inheritedFont,
       inheritedBackground: attributes.background || inheritedBackground,
       inheritedBorderRadius: attributes.borderRadius || inheritedBorderRadius,
@@ -406,7 +469,10 @@ async function getAllChildElementsAttributes({
     });
     allResults.push(
       ...childResults.elements.map((attr) => ({
-        attributes: attr,
+        attributes: {
+          ...attr,
+          depth: depth + 1,
+        },
         depth: depth + 1,
       }))
     );
@@ -466,12 +532,30 @@ async function getAllChildElementsAttributes({
       .sort((a, b) => {
         const zIndexA = a.attributes.zIndex || 0;
         const zIndexB = b.attributes.zIndex || 0;
+        const zIndexDiff = zIndexA - zIndexB;
 
-        if (zIndexA === zIndexB) {
-          return a.depth - b.depth;
+        if (zIndexDiff !== 0) {
+          return zIndexDiff;
         }
 
-        return zIndexA - zIndexB;
+        const depthDiff = a.depth - b.depth;
+        if (depthDiff !== 0) {
+          return depthDiff;
+        }
+
+        const domPathA = a.attributes.domPath || "";
+        const domPathB = b.attributes.domPath || "";
+        if (domPathA !== domPathB) {
+          return domPathA.localeCompare(domPathB);
+        }
+
+        const idA = a.attributes.id || "";
+        const idB = b.attributes.id || "";
+        if (idA !== idB) {
+          return idA.localeCompare(idB);
+        }
+
+        return 0;
       })
       .map(({ attributes }) => {
         if (
@@ -1100,6 +1184,67 @@ async function getElementAttributes(
       return Object.keys(filters).length > 0 ? filters : undefined;
     }
 
+    function parseListInfo(el: Element) {
+      const liEl = el.closest("li");
+      if (!liEl) {
+        return {
+          isListItem: false,
+          listType: undefined,
+          listLevel: undefined,
+          listStyleType: undefined,
+          listStylePosition: undefined,
+          listIndent: undefined,
+          listItemIndex: undefined,
+        };
+      }
+
+      const listEl = liEl.closest("ul,ol");
+      const listType = listEl ? listEl.tagName.toLowerCase() : undefined;
+      const listStyles = listEl ? window.getComputedStyle(listEl) : undefined;
+      const listStyleType = listStyles?.listStyleType;
+      const listStylePosition = listStyles?.listStylePosition as
+        | "inside"
+        | "outside"
+        | undefined;
+
+      const wrapper = document.getElementById("presentation-slides-wrapper");
+      let listLevelCount = 0;
+      let listIndentPx = 0;
+      let currentList = listEl;
+
+      while (currentList && (!wrapper || wrapper.contains(currentList))) {
+        listLevelCount += 1;
+        const cs = window.getComputedStyle(currentList);
+        const paddingLeft = parseFloat(cs.paddingLeft || "0");
+        const marginLeft = parseFloat(cs.marginLeft || "0");
+        listIndentPx += (isNaN(paddingLeft) ? 0 : paddingLeft) + (isNaN(marginLeft) ? 0 : marginLeft);
+        const nextParent = currentList.parentElement;
+        currentList = nextParent ? nextParent.closest("ul,ol") : null;
+      }
+
+      const listLevel = Math.max(0, listLevelCount - 1);
+
+      let listItemIndex: number | undefined;
+      const parent = liEl.parentElement;
+      if (parent) {
+        const items = Array.from(parent.children).filter(
+          (child) => (child as HTMLElement).tagName?.toLowerCase() === "li"
+        );
+        const index = items.indexOf(liEl);
+        listItemIndex = index >= 0 ? index : undefined;
+      }
+
+      return {
+        isListItem: true,
+        listType: listType as "ul" | "ol" | undefined,
+        listLevel,
+        listStyleType: listStyleType || undefined,
+        listStylePosition,
+        listIndent: listIndentPx > 0 ? listIndentPx : undefined,
+        listItemIndex,
+      };
+    }
+
     function parseElementAttributes(el: Element) {
       let tagName = el.tagName.toLowerCase();
 
@@ -1156,6 +1301,8 @@ async function getElementAttributes(
       const opacity = parseFloat(computedStyles.opacity);
       const elementOpacity = isNaN(opacity) ? undefined : opacity;
 
+      const listInfo = parseListInfo(el);
+
       return {
         tagName: tagName,
         id: el.id,
@@ -1188,6 +1335,13 @@ async function getElementAttributes(
         should_screenshot: false,
         element: undefined,
         filters: filters,
+        isListItem: listInfo.isListItem,
+        listType: listInfo.listType,
+        listLevel: listInfo.listLevel,
+        listStyleType: listInfo.listStyleType,
+        listStylePosition: listInfo.listStylePosition,
+        listIndent: listInfo.listIndent,
+        listItemIndex: listInfo.listItemIndex,
       };
     }
 

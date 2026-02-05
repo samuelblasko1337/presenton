@@ -28,6 +28,54 @@ const PresentationPage = ({ presentation_id }: { presentation_id: string }) => {
     (state: RootState) => state.presentationGeneration
   );
   const [error, setError] = useState(false);
+  const [exportReady, setExportReady] = useState(false);
+
+  const maybeSetExportReady = async () => {
+    if (exportReady) return;
+    if (loading || contentLoading) return;
+    if (!presentationData?.slides || presentationData.slides.length === 0) return;
+
+    try {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+    } catch {
+      // Ignore font readiness errors; export gate is still controlled by readiness flags.
+    }
+
+    if ((window as any).__PRESENTON_TIPTAP_READY__ !== true) return;
+
+    (window as any).__PRESENTON_EXPORT_READY__ = true;
+    const wrapper = document.getElementById("presentation-slides-wrapper");
+    if (wrapper) {
+      wrapper.setAttribute("data-export-ready", "true");
+    }
+    setExportReady(true);
+  };
+
+  useEffect(() => {
+    if (loading || contentLoading) return;
+    if (!presentationData?.slides || presentationData.slides.length === 0) return;
+
+    if (typeof window !== "undefined") {
+      (window as any).__PRESENTON_EXPORT_READY__ = false;
+    }
+    const wrapper = document.getElementById("presentation-slides-wrapper");
+    if (wrapper) {
+      wrapper.setAttribute("data-export-ready", "false");
+    }
+    maybeSetExportReady();
+  }, [loading, contentLoading, presentationData]);
+
+  useEffect(() => {
+    const handler = () => {
+      maybeSetExportReady();
+    };
+    window.addEventListener("presenton:tiptap-ready", handler);
+    return () => {
+      window.removeEventListener("presenton:tiptap-ready", handler);
+    };
+  }, [loading, contentLoading, presentationData, exportReady]);
   useEffect(() => {
     if (!loading && presentationData?.slides && presentationData?.slides.length > 0) {
       const presentation_id = presentationData?.slides[0].layout.split(":")[0].split("custom-")[1];
