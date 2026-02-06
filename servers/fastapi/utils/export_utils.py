@@ -36,7 +36,14 @@ async def export_presentation(
         # Create PPTX file using the converted model
         pptx_model = PptxPresentationModel(**pptx_model_data)
         temp_dir = TEMP_FILE_SERVICE.create_temp_dir()
-        pptx_creator = PptxPresentationCreator(pptx_model, temp_dir)
+        template_path = os.getenv("PPTX_TEMPLATE_PATH", "").strip()
+        if not template_path:
+            template_path = "C:\\Users\\samuelblasko\\demo\\images\\brand\\equip_carrier.pptx"
+        pptx_creator = PptxPresentationCreator(
+            pptx_model,
+            temp_dir,
+            template_path=template_path,
+        )
         await pptx_creator.create_ppt()
 
         export_directory = get_exports_directory()

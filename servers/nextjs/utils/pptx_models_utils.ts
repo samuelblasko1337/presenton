@@ -37,6 +37,24 @@ function convertTextAlignToPptxAlignment(textAlign?: string): PptxAlignment | un
   }
 }
 
+const PX_TO_PT = 72 / 96;
+const DEFAULT_FONT_SIZE_PX = 16;
+
+function pxToPt(value?: number): number | undefined {
+  if (value === undefined || value === null || isNaN(value)) return undefined;
+  return value * PX_TO_PT;
+}
+
+function pxToPtRounded(value?: number): number {
+  const pt = pxToPt(value);
+  return pt === undefined ? 0 : Math.round(pt);
+}
+
+function pxToPtRoundedOr(value: number | undefined, fallbackPx: number): number {
+  const raw = value ?? fallbackPx;
+  return Math.round(raw * PX_TO_PT);
+}
+
 function convertLineHeightToRelative(lineHeight?: number, fontSize?: number): number | undefined {
   if (!lineHeight) return undefined;
 
@@ -134,10 +152,10 @@ function convertElementToPptxShape(
 
 function convertToTextBox(element: ElementAttributes): PptxTextBoxModel {
   const position: PptxPositionModel = {
-    left: Math.round(element.position?.left ?? 0),
-    top: Math.round(element.position?.top ?? 0),
-    width: Math.round(element.position?.width ?? 0),
-    height: Math.round(element.position?.height ?? 0)
+    left: pxToPtRounded(element.position?.left),
+    top: pxToPtRounded(element.position?.top),
+    width: pxToPtRounded(element.position?.width),
+    height: pxToPtRounded(element.position?.height)
   };
 
   const fill: PptxFillModel | undefined = element.background?.color ? {
@@ -147,7 +165,7 @@ function convertToTextBox(element: ElementAttributes): PptxTextBoxModel {
 
   const font: PptxFontModel | undefined = element.font ? {
     name: mapToPptxFontName(element.font.name, (element.font as any).family, element.font.weight, element.tagName),
-    size: Math.round(element.font.size ?? 16),
+    size: pxToPtRoundedOr(element.font.size, DEFAULT_FONT_SIZE_PX),
     font_weight: element.font.weight ?? 400,
     italic: element.font.italic ?? false,
     color: element.font.color ?? "000000"
@@ -173,10 +191,10 @@ function convertToTextBox(element: ElementAttributes): PptxTextBoxModel {
 
 function convertToAutoShapeBox(element: ElementAttributes): PptxAutoShapeBoxModel {
   const position: PptxPositionModel = {
-    left: Math.round(element.position?.left ?? 0),
-    top: Math.round(element.position?.top ?? 0),
-    width: Math.round(element.position?.width ?? 0),
-    height: Math.round(element.position?.height ?? 0)
+    left: pxToPtRounded(element.position?.left),
+    top: pxToPtRounded(element.position?.top),
+    width: pxToPtRounded(element.position?.width),
+    height: pxToPtRounded(element.position?.height)
   };
   const fill: PptxFillModel | undefined = element.background?.color ? {
     color: element.background.color,
@@ -185,13 +203,13 @@ function convertToAutoShapeBox(element: ElementAttributes): PptxAutoShapeBoxMode
 
   const stroke: PptxStrokeModel | undefined = element.border?.color ? {
     color: element.border.color,
-    thickness: element.border.width ?? 1,
+    thickness: pxToPt(element.border.width ?? 1) ?? 1,
     opacity: element.border.opacity ?? 1.0
   } : undefined;
 
   const shadow: PptxShadowModel | undefined = element.shadow?.color ? {
-    radius: Math.round(element.shadow.radius ?? 4),
-    offset: Math.round(element.shadow.offset ? Math.sqrt(element.shadow.offset[0] ** 2 + element.shadow.offset[1] ** 2) : 0),
+    radius: pxToPtRounded(element.shadow.radius ?? 4),
+    offset: pxToPtRounded(element.shadow.offset ? Math.sqrt(element.shadow.offset[0] ** 2 + element.shadow.offset[1] ** 2) : 0),
     color: element.shadow.color,
     opacity: element.shadow.opacity ?? 0.5,
     angle: Math.round(element.shadow.angle ?? 0)
@@ -202,7 +220,7 @@ function convertToAutoShapeBox(element: ElementAttributes): PptxAutoShapeBoxMode
     alignment: convertTextAlignToPptxAlignment(element.textAlign),
     font: element.font ? {
       name: mapToPptxFontName(element.font.name, (element.font as any).family, element.font.weight, element.tagName),
-      size: Math.round(element.font.size ?? 16),
+      size: pxToPtRoundedOr(element.font.size, DEFAULT_FONT_SIZE_PX),
       font_weight: element.font.weight ?? 400,
       italic: element.font.italic ?? false,
       color: element.font.color ?? "000000"
@@ -216,7 +234,7 @@ function convertToAutoShapeBox(element: ElementAttributes): PptxAutoShapeBoxMode
   let borderRadius = undefined;
   for (const eachCornerRadius of element.borderRadius ?? []) {
     if (eachCornerRadius > 0) {
-      borderRadius = Math.max(borderRadius ?? 0, eachCornerRadius);
+      borderRadius = Math.max(borderRadius ?? 0, pxToPtRounded(eachCornerRadius));
     }
   }
 
@@ -236,10 +254,10 @@ function convertToAutoShapeBox(element: ElementAttributes): PptxAutoShapeBoxMode
 
 function convertToPictureBox(element: ElementAttributes): PptxPictureBoxModel {
   const position: PptxPositionModel = {
-    left: Math.round(element.position?.left ?? 0),
-    top: Math.round(element.position?.top ?? 0),
-    width: Math.round(element.position?.width ?? 0),
-    height: Math.round(element.position?.height ?? 0)
+    left: pxToPtRounded(element.position?.left),
+    top: pxToPtRounded(element.position?.top),
+    width: pxToPtRounded(element.position?.width),
+    height: pxToPtRounded(element.position?.height)
   };
 
   const objectFit: PptxObjectFitModel = {
@@ -258,7 +276,7 @@ function convertToPictureBox(element: ElementAttributes): PptxPictureBoxModel {
     clip: element.clip ?? true,
     invert: element.filters?.invert === 1,
     opacity: element.opacity,
-    border_radius: element.borderRadius ? element.borderRadius.map(r => Math.round(r)) : undefined,
+    border_radius: element.borderRadius ? element.borderRadius.map(r => Math.round(r * PX_TO_PT)) : undefined,
     shape: element.shape ? (element.shape as PptxBoxShapeEnum) : PptxBoxShapeEnum.RECTANGLE,
     object_fit: objectFit,
     picture
@@ -267,17 +285,17 @@ function convertToPictureBox(element: ElementAttributes): PptxPictureBoxModel {
 
 function convertToConnector(element: ElementAttributes): PptxConnectorModel {
   const position: PptxPositionModel = {
-    left: Math.round(element.position?.left ?? 0),
-    top: Math.round(element.position?.top ?? 0),
-    width: Math.round(element.position?.width ?? 0),
-    height: Math.round(element.position?.height ?? 0)
+    left: pxToPtRounded(element.position?.left),
+    top: pxToPtRounded(element.position?.top),
+    width: pxToPtRounded(element.position?.width),
+    height: pxToPtRounded(element.position?.height)
   };
 
   return {
     shape_type: "connector",
     type: PptxConnectorType.STRAIGHT,
     position,
-    thickness: element.border?.width ?? 0.5,
+    thickness: pxToPt(element.border?.width ?? 0.5) ?? 0.5,
     color: element.border?.color || element.background?.color || '000000',
     opacity: element.border?.opacity ?? 1.0
   };

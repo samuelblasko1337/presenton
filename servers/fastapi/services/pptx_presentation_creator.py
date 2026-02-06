@@ -49,15 +49,30 @@ BLANK_SLIDE_LAYOUT = 6
 
 
 class PptxPresentationCreator:
-    def __init__(self, ppt_model: PptxPresentationModel, temp_dir: str):
+    def __init__(
+        self,
+        ppt_model: PptxPresentationModel,
+        temp_dir: str,
+        template_path: Optional[str] = None,
+    ):
         self._temp_dir = temp_dir
 
         self._ppt_model = ppt_model
         self._slide_models = ppt_model.slides
 
-        self._ppt = Presentation()
-        self._ppt.slide_width = Pt(1280)
-        self._ppt.slide_height = Pt(720)
+        template_path = (template_path or "").strip()
+        if template_path:
+            template_path = os.path.abspath(os.path.expanduser(template_path))
+            if not os.path.isfile(template_path):
+                raise FileNotFoundError(
+                    f"PPTX template not found: {template_path}"
+                )
+            self._ppt = Presentation(template_path)
+            self._remove_all_slides()
+        else:
+            self._ppt = Presentation()
+            self._ppt.slide_width = Pt(960)
+            self._ppt.slide_height = Pt(540)
 
     def get_sub_element(self, parent, tagname, **kwargs):
         """Helper method to create XML elements"""
@@ -65,6 +80,14 @@ class PptxPresentationCreator:
         element.attrib.update(kwargs)
         parent.append(element)
         return element
+
+    def _remove_all_slides(self) -> None:
+        # python-pptx has no public slide delete API; use the underlying XML list.
+        sldIdLst = self._ppt.slides._sldIdLst  # type: ignore[attr-defined]
+        for sldId in list(sldIdLst):
+            rId = sldId.rId
+            self._ppt.part.drop_rel(rId)
+            sldIdLst.remove(sldId)
 
     async def fetch_network_assets(self):
         image_urls = []
