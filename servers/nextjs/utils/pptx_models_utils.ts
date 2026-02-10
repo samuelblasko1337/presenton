@@ -70,33 +70,41 @@ function convertLineHeightToRelative(lineHeight?: number, fontSize?: number): nu
   return calculatedLineHeight - 0.3
 }
 
-function mapToPptxFontName(rawName?: string, rawFamily?: string, weight?: number, tagName?: string): string {
+export function mapToPptxFontName(rawName?: string, rawFamily?: string, weight?: number, tagName?: string): string {
   const input = `${rawFamily ?? ""} ${rawName ?? ""}`.toLowerCase();
   const w = weight ?? 400;
   const tag = (tagName ?? "").toLowerCase();
+  const raw = rawName ?? "";
 
-  // Headline-Rollen
-  if (tag === "h1" || tag === "h2") return "Equip Extended ExtraBold";
-  if (tag === "h3") return "Equip Extended Light";
+  const toEquip = (fontWeight: number) => {
+    if (fontWeight >= 600) return "Equip";
+    if (fontWeight >= 500) return "Equip Medium";
+    return "Equip";
+  };
+  const toEquipExt = (fontWeight: number) =>
+    fontWeight >= 700 ? "Equip Extended ExtraBold" : "Equip Extended Light";
 
-  // Next/font Klassenname
-  if ((rawName ?? "").startsWith("__equip")) return "Equip";
-  if ((rawName ?? "").startsWith("__inter")) return "Inter 24pt";
+  // Next/font class names (match Equip Extended before Equip)
+  if (raw.startsWith("__equipExt")) return toEquipExt(w);
+  if (raw.startsWith("__equip")) return toEquip(w);
+  if (raw.startsWith("__inter")) return toEquip(w);
 
   // Equip Extended
   if (input.includes("equip extended") || input.includes("equipext") || input.includes("--font-equip-ext")) {
-    if (w >= 700) return "Equip Extended ExtraBold";
-    if (w >= 500) return "Equip Extended Medium";
-    return "Equip Extended Light";
+    return toEquipExt(w);
   }
 
   // Equip
   if (input.includes("equip") || input.includes("--font-equip")) {
-    return w >= 500 ? "Equip Medium" : "Equip Light";
+    return toEquip(w);
   }
 
-  // Fallback
-  return rawName || "Equip";
+  // Headline roles (fallback if no explicit font family)
+  if (tag === "h1" || tag === "h2") return "Equip Extended ExtraBold";
+  if (tag === "h3") return "Equip Extended Light";
+
+  // Fallback to embedded Equip faces only
+  return toEquip(w);
 }
 
 export function convertElementAttributesToPptxSlides(

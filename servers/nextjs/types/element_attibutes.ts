@@ -3,6 +3,7 @@ import { ElementHandle } from "puppeteer";
 export interface ElementAttributes {
   tagName: string;
   id?: string;
+  dataEditableId?: string;
   className?: string;
   innerText?: string;
   opacity?: number;
@@ -26,6 +27,7 @@ export interface ElementAttributes {
   },
   font?: {
     name?: string;
+    family?: string;
     size?: number;
     weight?: number;
     color?: string;

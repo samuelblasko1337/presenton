@@ -1,0 +1,454 @@
+{
+  "pptx_path": "C:\\Users\\samuelblasko\\demo\\images\\brand\\equip_carrier.pptx",
+  "embedded_typefaces": [
+    "Equip",
+    "Equip Extended",
+    "Equip Extended ExtraBold",
+    "Equip Extended Light",
+    "Equip Extended Medium",
+    "Equip Light",
+    "Equip Medium"
+  ],
+  "embedded_font_styles": {
+    "Equip": {
+      "has_regular": true,
+      "has_bold": true,
+      "has_italic": true,
+      "has_boldItalic": true
+    },
+    "Equip Extended": {
+      "has_regular": true,
+      "has_bold": true,
+      "has_italic": true,
+      "has_boldItalic": true
+    },
+    "Equip Extended ExtraBold": {
+      "has_regular": false,
+      "has_bold": true,
+      "has_italic": true,
+      "has_boldItalic": true
+    },
+    "Equip Extended Light": {
+      "has_regular": true,
+      "has_bold": true,
+      "has_italic": true,
+      "has_boldItalic": true
+    },
+    "Equip Extended Medium": {
+      "has_regular": true,
+      "has_bold": false,
+      "has_italic": true,
+      "has_boldItalic": false
+    },
+    "Equip Light": {
+      "has_regular": true,
+      "has_bold": true,
+      "has_italic": true,
+      "has_boldItalic": true
+    },
+    "Equip Medium": {
+      "has_regular": true,
+      "has_bold": false,
+      "has_italic": false,
+      "has_boldItalic": false
+    }
+  },
+  "embedded_font_binaries": [
+    {
+      "typeface": "Equip",
+      "style": "regular",
+      "rId": "rId7",
+      "part_name": "ppt/fonts/font1.fntdata",
+      "utf16_strings": [
+        "Equip",
+        "Regular",
+        "Version 1.000",
+        "Equip Regular"
+      ]
+    },
+    {
+      "typeface": "Equip",
+      "style": "bold",
+      "rId": "rId8",
+      "part_name": "ppt/fonts/font2.fntdata",
+      "utf16_strings": [
+        "Equip",
+        "Bold",
+        "Version 1.000",
+        "Equip Bold"
+      ]
+    },
+    {
+      "typeface": "Equip",
+      "style": "italic",
+      "rId": "rId9",
+      "part_name": "ppt/fonts/font3.fntdata",
+      "utf16_strings": [
+        "Equip",
+        "Italic",
+        "Version 1.000",
+        "Equip Italic"
+      ]
+    },
+    {
+      "typeface": "Equip",
+      "style": "boldItalic",
+      "rId": "rId10",
+      "part_name": "ppt/fonts/font4.fntdata",
+      "utf16_strings": [
+        "Equip",
+        "Bold Italic",
+        "Version 1.000",
+        "Equip Bold It"
+      ]
+    },
+    {
+      "typeface": "Equip Extended",
+      "style": "regular",
+      "rId": "rId11",
+      "part_name": "ppt/fonts/font5.fntdata",
+      "utf16_strings": [
+        "Equip Extended",
+        "Regular",
+        "Version 1.000",
+        ",Equip Extended Regular",
+        "`1tQ"
+      ]
+    },
+    {
+      "typeface": "Equip Extended",
+      "style": "bold",
+      "rId": "rId12",
+      "part_name": "ppt/fonts/font6.fntdata",
+      "utf16_strings": [
+        "Equip Extended",
+        "Bold",
+        "Version 1.000",
+        "&Equip Extended Bold"
+      ]
+    },
+    {
+      "typeface": "Equip Extended",
+      "style": "italic",
+      "rId": "rId13",
+      "part_name": "ppt/fonts/font7.fntdata",
+      "utf16_strings": [
+        "Equip Extended",
+        "Italic",
+        "Version 1.000",
+        "*Equip Extended Italic"
+      ]
+    },
+    {
+      "typeface": "Equip Extended",
+      "style": "boldItalic",
+      "rId": "rId14",
+      "part_name": "ppt/fonts/font8.fntdata",
+      "utf16_strings": [
+        "Equip Extended",
+        "Bold Italic",
+        "Version 1.000",
+        ",Equip Extended Bold It"
+      ]
+    },
+    {
+      "typeface": "Equip Extended ExtraBold",
+      "style": "bold",
+      "rId": "rId15",
+      "part_name": "ppt/fonts/font9.fntdata",
+      "utf16_strings": [
+        "2Equip Extended ExtraBold",
+        "Regular",
+        "Version 1.000",
+        "0Equip Extended ExtraBold"
+      ]
+    },
+    {
+      "typeface": "Equip Extended ExtraBold",
+      "style": "italic",
+      "rId": "rId16",
+      "part_name": "ppt/fonts/font10.fntdata",
+      "utf16_strings": [
+        "0Equip Extended ExtraBold",
+        "Regular",
+        "Version 1.000",
+        "6Equip Extended ExtraBold It",
+        "pto"
+      ]
+    },
+    {
+      "typeface": "Equip Extended ExtraBold",
+      "style": "boldItalic",
+      "rId": "rId17",
+      "part_name": "ppt/fonts/font11.fntdata",
+      "utf16_strings": [
+        "2Equip Extended ExtraBold",
+        "Regular",
+        "Version 1.000",
+        "6Equip Extended ExtraBold It"
+      ]
+    },
+    {
+      "typeface": "Equip Extended Light",
+      "style": "regular",
+      "rId": "rId18",
+      "part_name": "ppt/fonts/font12.fntdata",
+      "utf16_strings": [
+        "(Equip Extended Light",
+        "Regular",
+        "Version 1.000",
+        "XXXXXXXXXXXXXX"
+      ]
+    },
+    {
+      "typeface": "Equip Extended Light",
+      "style": "bold",
+      "rId": "rId19",
+      "part_name": "ppt/fonts/font13.fntdata",
+      "utf16_strings": [
+        "Light",
+        "Version 1.000",
+        "XXXXXXXXXXXXXX",
+        "I@s",
+        "M]#"
+      ]
+    },
+    {
+      "typeface": "Equip Extended Light",
+      "style": "italic",
+      "rId": "rId20",
+      "part_name": "ppt/fonts/font14.fntdata",
+      "utf16_strings": [
+        "(Equip Extended Light",
+        "Italic",
+        "Version 1.000",
+        ".Equip Extended Light It"
+      ]
+    },
+    {
+      "typeface": "Equip Extended Light",
+      "style": "boldItalic",
+      "rId": "rId21",
+      "part_name": "ppt/fonts/font15.fntdata",
+      "utf16_strings": [
+        "Light Italic",
+        "Version 1.000",
+        "547 It"
+      ]
+    },
+    {
+      "typeface": "Equip Extended Medium",
+      "style": "regular",
+      "rId": "rId22",
+      "part_name": "ppt/fonts/font16.fntdata",
+      "utf16_strings": [
+        ",Equip Extended Medium",
+        "Regular",
+        "Version 1.000",
+        "*Equip Extended Medium",
+        "UUUUUUQQQMMMM"
+      ]
+    },
+    {
+      "typeface": "Equip Extended Medium",
+      "style": "italic",
+      "rId": "rId23",
+      "part_name": "ppt/fonts/font17.fntdata",
+      "utf16_strings": [
+        ",Equip Extended Medium",
+        "Italic",
+        "Version 1.000",
+        "0Equip Extended Medium It"
+      ]
+    },
+    {
+      "typeface": "Equip Light",
+      "style": "regular",
+      "rId": "rId24",
+      "part_name": "ppt/fonts/font18.fntdata",
+      "utf16_strings": [
+        "Equip Light",
+        "Regular",
+        "Version 1.000"
+      ]
+    },
+    {
+      "typeface": "Equip Light",
+      "style": "bold",
+      "rId": "rId25",
+      "part_name": "ppt/fonts/font19.fntdata",
+      "utf16_strings": [
+        "Light",
+        "Version 1.000",
+        "`J3&"
+      ]
+    },
+    {
+      "typeface": "Equip Light",
+      "style": "italic",
+      "rId": "rId26",
+      "part_name": "ppt/fonts/font20.fntdata",
+      "utf16_strings": [
+        "Equip Light",
+        "Italic",
+        "Version 1.000",
+        "Equip Light It",
+        "60O"
+      ]
+    },
+    {
+      "typeface": "Equip Light",
+      "style": "boldItalic",
+      "rId": "rId27",
+      "part_name": "ppt/fonts/font21.fntdata",
+      "utf16_strings": [
+        "Light Italic",
+        "Version 1.000",
+        "553 It"
+      ]
+    },
+    {
+      "typeface": "Equip Medium",
+      "style": "regular",
+      "rId": "rId28",
+      "part_name": "ppt/fonts/font22.fntdata",
+      "utf16_strings": [
+        "Equip Medium",
+        "Regular",
+        "Version 1.000"
+      ]
+    }
+  ],
+  "theme_majorLatin": "Equip Extended Medium",
+  "theme_minorLatin": "Equip Light",
+  "requested_typefaces": {
+    "Equip Extended ExtraBold": 3,
+    "Equip Extended Light": 1,
+    "Equip Medium": 1
+  },
+  "requested_faces": {
+    "Equip Extended ExtraBold": 3,
+    "Equip Extended Light": 1,
+    "Equip Medium": 1
+  },
+  "requested_theme_tokens": {},
+  "requested_resolved": {
+    "Equip Extended ExtraBold": 3,
+    "Equip Extended Light": 1,
+    "Equip Medium": 1
+  },
+  "missing_typeface_runs": {
+    "runs": 2,
+    "paragraphs": 4,
+    "total": 6
+  },
+  "missing_paragraphs_empty": 0,
+  "missing_paragraphs_nonempty": 4,
+  "missing_runs_with_text": 2,
+  "missing_paragraph_locations": [
+    {
+      "slide_file": "ppt/slides/slide1.xml",
+      "slide_index": 1,
+      "shape_index": 2,
+      "shape_id": "3",
+      "shape_name": "Textplatzhalter 2",
+      "paragraph_index": 1,
+      "has_runs": true,
+      "run_count": 1,
+      "run_typefaces": [
+        "Equip Extended Light"
+      ],
+      "snippet": "Equip Extended Light",
+      "has_defRPr_latin": false,
+      "has_endParaRPr_latin": false,
+      "xpaths": "/p:sld/p:cSld/p:spTree/p:sp[2]/p:txBody/a:p[1]"
+    },
+    {
+      "slide_file": "ppt/slides/slide1.xml",
+      "slide_index": 1,
+      "shape_index": 3,
+      "shape_id": "4",
+      "shape_name": "Textplatzhalter 3",
+      "paragraph_index": 1,
+      "has_runs": true,
+      "run_count": 1,
+      "run_typefaces": [],
+      "snippet": "Equip Light",
+      "has_defRPr_latin": false,
+      "has_endParaRPr_latin": false,
+      "xpaths": "/p:sld/p:cSld/p:spTree/p:sp[3]/p:txBody/a:p[1]"
+    },
+    {
+      "slide_file": "ppt/slides/slide1.xml",
+      "slide_index": 1,
+      "shape_index": 4,
+      "shape_id": "5",
+      "shape_name": "Textplatzhalter 4",
+      "paragraph_index": 1,
+      "has_runs": true,
+      "run_count": 1,
+      "run_typefaces": [],
+      "snippet": "Equip",
+      "has_defRPr_latin": false,
+      "has_endParaRPr_latin": false,
+      "xpaths": "/p:sld/p:cSld/p:spTree/p:sp[4]/p:txBody/a:p[1]"
+    },
+    {
+      "slide_file": "ppt/slides/slide1.xml",
+      "slide_index": 1,
+      "shape_index": 5,
+      "shape_id": "14",
+      "shape_name": "Textplatzhalter 13",
+      "paragraph_index": 1,
+      "has_runs": true,
+      "run_count": 1,
+      "run_typefaces": [
+        "Equip Medium"
+      ],
+      "snippet": "Equip Extended",
+      "has_defRPr_latin": false,
+      "has_endParaRPr_latin": false,
+      "xpaths": "/p:sld/p:cSld/p:spTree/p:sp[5]/p:txBody/a:p[1]"
+    }
+  ],
+  "unsupported_style_usage": {
+    "counts": {
+      "Equip Extended ExtraBold": {
+        "regular": 2
+      }
+    },
+    "violations": [
+      {
+        "slide_file": "ppt/slides/slide1.xml",
+        "shape_id": "2",
+        "shape_name": "Titel 1",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Extended ExtraBold",
+        "bold": false,
+        "italic": false,
+        "snippet": "Equip Extended "
+      },
+      {
+        "slide_file": "ppt/slides/slide1.xml",
+        "shape_id": "2",
+        "shape_name": "Titel 1",
+        "paragraph_index": 1,
+        "run_index": 2,
+        "typeface": "Equip Extended ExtraBold",
+        "bold": false,
+        "italic": false,
+        "snippet": "ExtraBold"
+      }
+    ]
+  },
+  "unknown_requested": [],
+  "counts": {
+    "embedded": 7,
+    "requested_unique": 3,
+    "requested_faces_unique": 3,
+    "requested_theme_tokens_unique": 0,
+    "requested_resolved_unique": 3,
+    "unknown_requested": 0
+  }
+}

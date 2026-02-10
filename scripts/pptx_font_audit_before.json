@@ -1,0 +1,484 @@
+{
+  "pptx_path": "C:\\Users\\samuelblasko\\demo\\exports\\c6c2fb6f-2bb4-4bc4-80a0-bb35c0d4869c.pptx",
+  "embedded_typefaces": [
+    "Equip",
+    "Equip Extended ExtraBold",
+    "Equip Extended Light",
+    "Equip Medium"
+  ],
+  "embedded_font_styles": {
+    "Equip": {
+      "has_regular": true,
+      "has_bold": true,
+      "has_italic": true,
+      "has_boldItalic": true
+    },
+    "Equip Extended ExtraBold": {
+      "has_regular": false,
+      "has_bold": true,
+      "has_italic": false,
+      "has_boldItalic": false
+    },
+    "Equip Extended Light": {
+      "has_regular": true,
+      "has_bold": false,
+      "has_italic": false,
+      "has_boldItalic": false
+    },
+    "Equip Medium": {
+      "has_regular": true,
+      "has_bold": false,
+      "has_italic": false,
+      "has_boldItalic": false
+    }
+  },
+  "theme_majorLatin": "Equip",
+  "theme_minorLatin": "Equip",
+  "requested_typefaces": {
+    "Equip": 308,
+    "Equip Medium": 74
+  },
+  "requested_faces": {
+    "Equip": 308,
+    "Equip Medium": 74
+  },
+  "requested_theme_tokens": {},
+  "requested_resolved": {
+    "Equip": 308,
+    "Equip Medium": 74
+  },
+  "missing_typeface_runs": {
+    "runs": 0,
+    "paragraphs": 24,
+    "total": 24
+  },
+  "missing_paragraphs_empty": 24,
+  "missing_paragraphs_nonempty": 0,
+  "missing_runs_with_text": 0,
+  "missing_paragraph_locations": [],
+  "unsupported_style_usage": {
+    "counts": {
+      "Equip Medium": {
+        "bold": 37
+      }
+    },
+    "violations": [
+      {
+        "slide_file": "ppt/slides/slide1.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Warum Nagarro? Strategische St\u00e4rken & Wa"
+      },
+      {
+        "slide_file": "ppt/slides/slide10.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Kundenkonzentration & Personal"
+      },
+      {
+        "slide_file": "ppt/slides/slide10.xml",
+        "shape_id": "5",
+        "shape_name": "TextBox 4",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Kundenkonzentration"
+      },
+      {
+        "slide_file": "ppt/slides/slide10.xml",
+        "shape_id": "13",
+        "shape_name": "TextBox 12",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Personal & Strategie"
+      },
+      {
+        "slide_file": "ppt/slides/slide11.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Strategische Initiativen & Wachstumstrei"
+      },
+      {
+        "slide_file": "ppt/slides/slide11.xml",
+        "shape_id": "4",
+        "shape_name": "TextBox 3",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Nicht-lineare Wachstumschancen"
+      },
+      {
+        "slide_file": "ppt/slides/slide11.xml",
+        "shape_id": "11",
+        "shape_name": "TextBox 10",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "M&A & Integration"
+      },
+      {
+        "slide_file": "ppt/slides/slide11.xml",
+        "shape_id": "16",
+        "shape_name": "TextBox 15",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Wachstumstreiber & KPIs"
+      },
+      {
+        "slide_file": "ppt/slides/slide12.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Kapitalallokation & Cash-Management"
+      },
+      {
+        "slide_file": "ppt/slides/slide12.xml",
+        "shape_id": "5",
+        "shape_name": "TextBox 4",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Strategische Ziele"
+      },
+      {
+        "slide_file": "ppt/slides/slide12.xml",
+        "shape_id": "11",
+        "shape_name": "TextBox 10",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Aktienr\u00fcckkaufprogramm"
+      },
+      {
+        "slide_file": "ppt/slides/slide12.xml",
+        "shape_id": "17",
+        "shape_name": "TextBox 16",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Bisherige R\u00fcckk\u00e4ufe (bis 30.06.2025)"
+      },
+      {
+        "slide_file": "ppt/slides/slide12.xml",
+        "shape_id": "23",
+        "shape_name": "TextBox 22",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Dividendenpolitik"
+      },
+      {
+        "slide_file": "ppt/slides/slide12.xml",
+        "shape_id": "29",
+        "shape_name": "TextBox 28",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Liquidit\u00e4ts\u2011 und Risiko\u2011Management"
+      },
+      {
+        "slide_file": "ppt/slides/slide13.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Finanzlage & Liquidit\u00e4t"
+      },
+      {
+        "slide_file": "ppt/slides/slide13.xml",
+        "shape_id": "6",
+        "shape_name": "TextBox 5",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "\u20ac122M"
+      },
+      {
+        "slide_file": "ppt/slides/slide13.xml",
+        "shape_id": "10",
+        "shape_name": "TextBox 9",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Berechnet"
+      },
+      {
+        "slide_file": "ppt/slides/slide13.xml",
+        "shape_id": "14",
+        "shape_name": "TextBox 13",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Op./Inv./Fin."
+      },
+      {
+        "slide_file": "ppt/slides/slide14.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Governance \u2014 Aufsichtsrat (Auszug)"
+      },
+      {
+        "slide_file": "ppt/slides/slide14.xml",
+        "shape_id": "5",
+        "shape_name": "TextBox 4",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Strategieausschuss"
+      },
+      {
+        "slide_file": "ppt/slides/slide14.xml",
+        "shape_id": "13",
+        "shape_name": "TextBox 12",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Pr\u00fcfungsausschuss"
+      },
+      {
+        "slide_file": "ppt/slides/slide14.xml",
+        "shape_id": "21",
+        "shape_name": "TextBox 20",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Nominierungs\u2011 & Verg\u00fctungsausschuss"
+      },
+      {
+        "slide_file": "ppt/slides/slide15.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Warum Nagarro? \u2014 Schl\u00fcsselargumente"
+      },
+      {
+        "slide_file": "ppt/slides/slide2.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Wichtiger Hinweis"
+      },
+      {
+        "slide_file": "ppt/slides/slide3.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Rechtlicher Hinweis zu Prognosen und Ken"
+      },
+      {
+        "slide_file": "ppt/slides/slide4.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Unsere Mission: Grenzenlose, intelligent"
+      },
+      {
+        "slide_file": "ppt/slides/slide5.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Q2 2025 \u2014 Leistung, Margen und Akquisiti"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Q2 2025 \u2014 Kernzahlen"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "6",
+        "shape_name": "TextBox 5",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "\u20ac252 Mio"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "10",
+        "shape_name": "TextBox 9",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "+3,2% / +4,7%"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "14",
+        "shape_name": "TextBox 13",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "33,2%"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "18",
+        "shape_name": "TextBox 17",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "\u20ac30,5 Mio"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "22",
+        "shape_name": "TextBox 21",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "\u20ac122 Mio"
+      },
+      {
+        "slide_file": "ppt/slides/slide6.xml",
+        "shape_id": "26",
+        "shape_name": "TextBox 25",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "188"
+      },
+      {
+        "slide_file": "ppt/slides/slide7.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Weitere Kennzahlen, NPS und Guidance 202"
+      },
+      {
+        "slide_file": "ppt/slides/slide8.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Umsatz nach Branche (Auszug)"
+      },
+      {
+        "slide_file": "ppt/slides/slide9.xml",
+        "shape_id": "3",
+        "shape_name": "TextBox 2",
+        "paragraph_index": 1,
+        "run_index": 1,
+        "typeface": "Equip Medium",
+        "bold": true,
+        "italic": false,
+        "snippet": "Umsatz nach Geografie: Regionale Entwick"
+      }
+    ]
+  },
+  "unknown_requested": [],
+  "counts": {
+    "embedded": 4,
+    "requested_unique": 2,
+    "requested_faces_unique": 2,
+    "requested_theme_tokens_unique": 0,
+    "requested_resolved_unique": 2,
+    "unknown_requested": 0
+  }
+}

@@ -5,7 +5,10 @@ import {
   ElementAttributes,
   SlideAttributesResult,
 } from "@/types/element_attibutes";
-import { convertElementAttributesToPptxSlides } from "@/utils/pptx_models_utils";
+import {
+  convertElementAttributesToPptxSlides,
+  mapToPptxFontName,
+} from "@/utils/pptx_models_utils";
 import { PptxPresentationModel } from "@/types/pptx_models";
 import fs from "fs";
 import path from "path";
@@ -14,6 +17,7 @@ import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+const EXPORT_FONT_DEBUG = process.env.EXPORT_FONT_DEBUG === "1";
 
 interface GetAllChildElementsAttributesArgs {
   element: ElementHandle<Element>;
@@ -43,8 +47,14 @@ export async function GET(request: NextRequest) {
     await waitForExportReady(page);
     const screenshotsDir = getScreenshotsDir();
 
+    if (EXPORT_FONT_DEBUG) {
+      await logDomFontDiagnostics(page);
+    }
     const { slides, speakerNotes } = await getSlidesAndSpeakerNotes(page);
     const slides_attributes = await getSlidesAttributes(slides, screenshotsDir);
+    if (EXPORT_FONT_DEBUG) {
+      logScrapedFontDiagnostics(slides_attributes);
+    }
     await postProcessSlidesAttributes(
       slides_attributes,
       screenshotsDir,
@@ -71,6 +81,98 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+async function logDomFontDiagnostics(page: Page) {
+  try {
+    const data = await page.evaluate(() => {
+      const rootStyles = window.getComputedStyle(
+        document.documentElement
+      );
+      const equipVar = rootStyles
+        .getPropertyValue("--font-equip")
+        .trim();
+      const equipExtVar = rootStyles
+        .getPropertyValue("--font-equip-ext")
+        .trim();
+      const nodes = Array.from(
+        document.querySelectorAll(".ppt-title")
+      );
+      const sample = nodes.slice(0, 10).map((el) => {
+        const cs = window.getComputedStyle(el);
+        return {
+          tagName: el.tagName.toLowerCase(),
+          className: (el as HTMLElement).className || "",
+          fontFamily: cs.fontFamily,
+          fontWeight: cs.fontWeight,
+          fontStyle: cs.fontStyle,
+          outerHTML: (el as HTMLElement).outerHTML.slice(0, 200),
+        };
+      });
+      return {
+        equipVar,
+        equipExtVar,
+        pptTitleCount: nodes.length,
+        pptTitleSample: sample,
+      };
+    });
+
+    console.log("[PPTX_FONT_DEBUG] cssVars", {
+      "--font-equip": data.equipVar,
+      "--font-equip-ext": data.equipExtVar,
+    });
+    console.log("[PPTX_FONT_DEBUG] ppt-title count", data.pptTitleCount);
+    for (const item of data.pptTitleSample) {
+      console.log("[PPTX_FONT_DEBUG] ppt-title sample", item);
+    }
+  } catch (err) {
+    console.warn("[PPTX_FONT_DEBUG] dom diagnostics failed", err);
+  }
+}
+
+function logScrapedFontDiagnostics(
+  slides_attributes: SlideAttributesResult[]
+) {
+  let totalTextElements = 0;
+  let pptTitleElements = 0;
+
+  for (const [slideIndex, slide] of slides_attributes.entries()) {
+    for (const [elementIndex, el] of slide.elements.entries()) {
+      if (!el.innerText || el.innerText.trim().length === 0) continue;
+      totalTextElements += 1;
+
+      const className = el.className || "";
+      const hasPptTitle = className.includes("ppt-title");
+      if (hasPptTitle) pptTitleElements += 1;
+
+      const mapped = mapToPptxFontName(
+        el.font?.name,
+        el.font?.family,
+        el.font?.weight,
+        el.tagName
+      );
+
+      console.log("[PPTX_FONT_DEBUG] scraped-element", {
+        slideIndex,
+        elementIndex,
+        elementId: el.id,
+        dataEditableId: el.dataEditableId,
+        tagName: el.tagName,
+        className,
+        fontName: el.font?.name,
+        fontFamily: el.font?.family,
+        fontWeight: el.font?.weight,
+        fontStyle: el.font?.italic ? "italic" : "normal",
+        mapped,
+        hasPptTitle,
+      });
+    }
+  }
+
+  console.log("[PPTX_FONT_DEBUG] scraped summary", {
+    totalTextElements,
+    pptTitleElements,
+  });
 }
 
 async function getPresentationId(request: NextRequest) {
@@ -962,6 +1064,7 @@ async function getElementAttributes(
 
       const font = {
         name: fontName,
+        family: fontFamily,
         size: isNaN(fontSize) ? undefined : fontSize,
         weight: isNaN(fontWeight) ? undefined : fontWeight,
         color: fontColorResult.hex,
@@ -1305,10 +1408,12 @@ async function getElementAttributes(
       const elementOpacity = isNaN(opacity) ? undefined : opacity;
 
       const listInfo = parseListInfo(el);
+      const dataEditableId = el.getAttribute("data-editable-id") || undefined;
 
       return {
         tagName: tagName,
         id: el.id,
+        dataEditableId: dataEditableId,
         className:
           el.className && typeof el.className === "string"
             ? el.className

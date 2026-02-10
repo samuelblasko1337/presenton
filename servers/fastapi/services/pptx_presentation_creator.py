@@ -136,6 +136,8 @@ class PptxPresentationCreator:
     async def create_ppt(self):
         await self.fetch_network_assets()
 
+        self.set_theme_fonts()
+
         for slide_model in self._slide_models:
             # Adding global shapes to slide
             if self._ppt_model.shapes:
@@ -160,6 +162,34 @@ class PptxPresentationCreator:
                     namespaces=nsmap,
                 )[0]
                 color_element.set("val", hex_value.encode("utf-8"))
+
+        theme_part._blob = tostring(theme)
+
+
+    def set_theme_fonts(
+        self,
+        major_latin: str = "Equip Extended Medium",
+        minor_latin: str = "Equip",
+    ):
+        slide_master = self._ppt.slide_master
+        theme_part = slide_master.part.part_related_by(RT.THEME)
+        theme = fromstring(theme_part.blob)
+
+        nsmap = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
+
+        major_fonts = theme.xpath(
+            "a:themeElements/a:fontScheme/a:majorFont/a:latin",
+            namespaces=nsmap,
+        )
+        if major_fonts:
+            major_fonts[0].set("typeface", major_latin)
+
+        minor_fonts = theme.xpath(
+            "a:themeElements/a:fontScheme/a:minorFont/a:latin",
+            namespaces=nsmap,
+        )
+        if minor_fonts:
+            minor_fonts[0].set("typeface", minor_latin)
 
         theme_part._blob = tostring(theme)
 
@@ -490,6 +520,12 @@ class PptxPresentationCreator:
         font.italic = font_model.italic
         font.size = Pt(font_model.size)
         font.bold = font_model.font_weight >= 600
+        if font.name == "Equip Extended ExtraBold":
+            font.bold = True
+        if font.name == "Equip Extended Light" and font.bold:
+            font.bold = False
+        if font.name == "Equip Medium" and (font.bold or font.italic):
+            font.name = "Equip"
         if font_model.underline is not None:
             font.underline = bool(font_model.underline)
         if font_model.strike is not None:
