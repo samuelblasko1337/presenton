@@ -83,7 +83,7 @@ const config: Config = {
       },
       fontFamily: {
         instrument_sans: ["var(--font-instrument-sans)"],
-        inter: ["var(--font-inter)"],
+        inter: ["var(--font-equip)"],
         roboto: ["var(--font-roboto)"],
       },
     },

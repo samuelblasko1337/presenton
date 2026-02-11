@@ -20,7 +20,9 @@ class IconFinderService:
         self.model_path = os.getenv("ICONFINDER_MODEL_PATH", "chroma/models")
         self.icons_json_path = os.getenv("ICONFINDER_ICONS_JSON", "assets/icons.json")
 
-        self.disabled = os.getenv("DISABLE_ICON_FINDER", "").lower() in ("1", "true", "yes")
+        enable = os.getenv("ENABLE_ICON_FINDER", "").lower() in ("1", "true", "yes")
+        disable = os.getenv("DISABLE_ICON_FINDER", "").lower() in ("1", "true", "yes")
+        self.disabled = (not enable) or disable
 
         # Lazy-init state
         self._initialized = False

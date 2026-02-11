@@ -11,6 +11,8 @@ app_data
 tmp
 debug
 .fastembed_cache
+scripts/pptx_font_audit_*.json
+servers/nextjs/app/fonts/*.ttf
 
 generated_models
 nltk

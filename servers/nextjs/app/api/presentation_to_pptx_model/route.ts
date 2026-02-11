@@ -14,6 +14,7 @@ import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
+import { createHash } from "crypto";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -35,6 +36,10 @@ interface GetAllChildElementsAttributesArgs {
   inheritedOpacity?: number;
   domPath?: string;
   screenshotsDir: string;
+}
+
+function hashStableId(stableId: string): string {
+  return createHash("sha256").update(stableId).digest("hex").slice(0, 16);
 }
 
 export async function GET(request: NextRequest) {
@@ -308,9 +313,7 @@ async function screenshotElement(
   screenshotsDir: string,
   stableId?: string
 ) {
-  const safeId = stableId
-    ? stableId.replace(/[^a-zA-Z0-9._-]/g, "_")
-    : uuidv4();
+  const safeId = stableId ? hashStableId(stableId) : uuidv4();
   const screenshotPath = path.join(
     screenshotsDir,
     `${safeId}.png`

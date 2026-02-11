@@ -6,17 +6,6 @@ import { Providers } from "./providers";
 import MixpanelInitializer from "./MixpanelInitializer";
 import { LayoutProvider } from "./(presentation-generator)/context/LayoutContext";
 import { Toaster } from "@/components/ui/sonner";
-const inter = localFont({
-  src: [
-    {
-      path: "./fonts/Inter.ttf",
-      weight: "400",
-      style: "normal",
-    },
-  ],
-  variable: "--font-inter",
-});
-
 const equip = localFont({
   src: [
     { path: "./fonts/EquipLig.ttf", weight: "300", style: "normal" },
@@ -116,3 +105,4 @@ export default function RootLayout({
     </html>
   );
 }
+
